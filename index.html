@@ -3,192 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HK GLOBAL HOLOGRAM</title>
+    <title>HK-HOLOGRAM | Future is Now</title>
     <style>
         :root {
-            --holo-cyan: #00f2ff;
-            --holo-pink: #ff00e1;
-            --bg-dark: #000000;
+            --neon-green: #00ff88;
+            --cyber-blue: #00e5ff;
+            --dark-bg: #030303;
+            --text-gray: #888;
         }
-
         body {
             margin: 0;
-            background-color: var(--bg-dark);
-            color: var(--holo-cyan);
-            font-family: 'Malgun Gothic', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            /* 공간감 깊게 설정 */
-            perspective: 1500px; 
-        }
-
-        /* [핵심] 항상 기울어져 있는 홀로그램 바디 */
-        .holo-frame {
-            position: relative;
-            width: 320px;
-            height: 580px;
-            border-left: 2px solid rgba(0, 242, 255, 0.3);
-            border-right: 2px solid rgba(0, 242, 255, 0.1);
-            background: linear-gradient(to bottom, rgba(0, 242, 255, 0.05), transparent);
-            
-            /* 영화처럼 삐딱하게 고정 */
-            transform: rotateX(20deg) rotateY(-15deg) rotateZ(2deg);
-            transform-style: preserve-3d;
-            box-shadow: -20px 20px 50px rgba(0, 242, 255, 0.1);
-            animation: vibe 4s ease-in-out infinite alternate;
-        }
-
-        /* 미세하게 흔들리는 애니메이션 (살아있는 홀로그램 느낌) */
-        @keyframes vibe {
-            from { transform: rotateX(20deg) rotateY(-15deg) translateY(0); }
-            to { transform: rotateX(22deg) rotateY(-12deg) translateY(-10px); }
-        }
-
-        /* [요청 1] 우측 상단 세로 언어 티커 */
-        .side-lang {
-            position: absolute;
-            top: 30px;
-            right: -20px; /* 살짝 밖으로 튀어나오게 */
-            height: 150px;
-            width: 100px;
-            overflow: hidden;
-            border-right: 2px solid var(--holo-pink);
-            transform: translateZ(50px);
-        }
-
-        .ticker-v {
+            padding: 0;
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--soft-white);
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            animation: scroll-v 15s linear infinite;
+            min-height: 100vh;
         }
 
-        .ticker-v span {
-            font-size: 0.7rem;
-            color: var(--holo-pink);
-            text-align: right;
-            padding: 5px;
-            text-shadow: 0 0 8px var(--holo-pink);
-            white-space: nowrap;
+        /* SF Style Language Selector - Top Right */
+        .lang-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--cyber-blue);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,229,255,0.3);
+        }
+        #lang-select {
+            background: transparent;
+            color: var(--cyber-blue);
+            border: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-transform: uppercase;
         }
 
-        @keyframes scroll-v {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-
-        /* 중앙 메인 디스플레이 */
-        .content {
-            position: absolute;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%) translateZ(80px); /* 글자를 앞으로 띄움 */
-            text-align: center;
-        }
-
-        .title {
-            font-size: 1rem;
-            letter-spacing: 3px;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-
-        .clock {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 0 20px var(--holo-cyan), 0 0 40px var(--holo-cyan);
-            margin: 20px 0;
-        }
-
-        /* 입체 구체 (빛 덩어리) */
-        .orb {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            background: radial-gradient(circle, var(--holo-cyan) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(15px);
-            opacity: 0.6;
-            animation: pulse 2s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.4; }
-            to { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        /* 하단 바 */
-        .bottom-info {
-            position: absolute;
-            bottom: 40px;
-            width: 100%;
-            text-align: center;
-            transform: translateZ(30px);
-        }
-
-        .app-icons {
+        header {
+            height: 90vh;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .icon {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--holo-cyan);
-            border-radius: 10px;
-            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 242, 255, 0.1);
+            text-align: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            border-bottom: 2px solid var(--neon-green);
         }
+        .logo { font-size: 4.5rem; font-weight: 900; color: var(--neon-green); letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,255,136,0.6); }
+        .slogan { font-size: 1.4rem; font-weight: 300; margin-top: 30px; color: #ccc; }
+
+        /* Hologram Countdown from image_2.png */
+        .hologram-clock {
+            font-family: 'Courier New', monospace;
+            font-size: 5rem;
+            color: var(--cyber-blue);
+            text-shadow: 0 0 30px rgba(0,229,255,0.8);
+            margin: 50px 0;
+        }
+
+        section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; flex: 1; }
+        h2 { font-size: 2rem; color: var(--cyber-blue); text-align: center; margin-bottom: 40px; text-transform: uppercase; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { 
+            background: #111; 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        .card:hover { border-color: var(--neon-green); box-shadow: 0 0 30px rgba(0,255,136,0.2); }
+        .card h3 { color: var(--neon-green); font-size: 1.8rem; margin-top: 0; }
+        .card p { font-size: 1.1rem; color: #bbb; }
+        .tech-tag { display: block; margin-top: 20px; color: var(--cyber-blue); font-weight: bold; font-size: 0.85rem; }
+
+        footer { 
+            background: #000; 
+            padding: 50px 20px; 
+            text-align: center; 
+            border-top: 1px solid #222;
+        }
+        .contact-email { color: var(--neon-green); font-weight: bold; font-size: 1.1rem; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <div class="holo-frame">
-        <div class="side-lang">
-            <div class="ticker-v">
-                <span>시스템 활성화</span><span>SYSTEM ACTIVE</span><span>系统已激活</span>
-                <span>시스템起動</span><span>النظام نشط</span><span>सिस्टम सक्रिय है</span>
-                <span>SISTEMA ACTIVO</span><span>SISTEMA ATIVO</span><span>СИСТЕМА АКТИВНА</span>
-                <span>시스템 활성화</span><span>SYSTEM ACTIVE</span><span>系统已激活</span>
-                <span>시스템起動</span><span>النظام نشط</span><span>सिस्टम सक्रिय है</span>
-                <span>SISTEMA ACTIVO</span><span>SISTEMA ATIVO</span><span>СИСТЕМА АКТИВНА</span>
-            </div>
-        </div>
+<div class="lang-control">
+    <select id="lang-select" onchange="changeLanguage(this.value)">
+        <option value="ko">KO</option>
+        <option value="en">EN</option>
+        <option value="zh">ZH</option>
+        <option value="ar">AR</option>
+        <option value="hi">HI</option>
+        <option value="es">ES</option>
+        <option value="pt">PT</option>
+        <option value="uk">UK</option>
+        <option value="ja">JA</option>
+        <option value="ru">RU</option>
+    </select>
+</div>
 
-        <div class="content">
-            <div class="title">HK GLOBAL NETWORK</div>
-            <div class="clock" id="clock">00:00:00</div>
-            <div class="orb"></div>
-            <div style="color: var(--holo-pink); font-size: 0.8rem; letter-spacing: 2px;">QUANTUM SECURED</div>
-        </div>
+<header>
+    <div class="logo">HK-HOLOGRAM</div>
+    <div class="slogan" id="main-slogan">"전 세계를 하나로 연결하는 홀로그램 생태계의 탄생"</div>
+    <div class="hologram-clock" id="hologram-time">00:00:00</div>
+</header>
 
-        <div class="bottom-info">
-            <div style="font-size: 0.6rem; opacity: 0.5;">SECTOR: ULSAN_052</div>
-            <div class="app-icons">
-                <div class="icon">🤖</div>
-                <div class="icon">🛰️</div>
-                <div class="icon">🔋</div>
-                <div class="icon">🌐</div>
-            </div>
+<section>
+    <h2 id="section-title">Core Revolution</h2>
+    <div class="grid">
+        <div class="card">
+            <h3 id="card1-title">초정밀 홀로그램 투사</h3>
+            <p id="card1-desc">우리의 기술은 단순한 이미지가 아닙니다. 전용 나노 로봇을 통해 공기 중에 실제 물체가 있는 듯한 3D 입체 홀로그램을 투사합니다.</p>
+            <span class="tech-tag">Powered by OpenMind-Holo AI</span>
+        </div>
+        <div class="card">
+            <h3 id="card2-title">글로벌 퀀텀 네트워크</h3>
+            <p id="card2-desc">HK-WORLDBANK의 퀀텀 보안망을 통해 전 세계 어디서든 대기 시간 없이 초고화질 홀로그램 회의 및 쇼핑을 즐길 수 있습니다.</p>
+            <span class="tech-tag">Network by HK-Group Quantum Security</span>
+        </div>
+        <div class="card">
+            <h3 id="card3-title">불멸의 자아 복원</h3>
+            <p id="card3-desc">당신의 생체 데이터를 홀로그램 데이터로 변환하여 저장하십시오. 향후 인공 신체 교체 시 완벽한 자아 복원을 보장합니다.</p>
+            <span class="tech-tag" id="card3-tag">Backed by HK-QUANTUMBIO Data Bank</span>
         </div>
     </div>
+</section>
 
-    <script>
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('clock').innerText = 
-                now.getHours().toString().padStart(2, '0') + ":" +
-                now.getMinutes().toString().padStart(2, '0') + ":" +
-                now.getSeconds().toString().padStart(2, '0');
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-    </script>
+<footer>
+    <a href="mailto:info@hkhologram" class="contact-email">info@hkhologram</a>
+    <p style="margin-top:20px; font-size:0.9rem; color:#444;">HK-GROUP Chairman Lee Jae-wan (Hyekong) | Partner: HK-WORLDBANK, OpenMind AI</p>
+</footer>
+
+<script>
+// SF 영화 스타일의 실시간 시계 스크립트
+function updateHologramTime() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('hologram-time').innerText = `${h}:${m}:${s}`;
+}
+setInterval(updateHologramTime, 1000);
+updateHologramTime(); // 즉시 실행
+
+// 다국어 번역 데이터 객체 (요청하신 10개 언어 뼈대)
+const translations = {
+    ko: { slogan: '"전 세계를 하나로 연결하는 홀로그램 생태계의 탄생"', secTitle: "Core Revolution", c1t: "초정밀 홀로그램 투사", c1d: "공기 중에 실제 물체가 있는 듯한 3D 입체 홀로그램을 투사합니다.", c2t: "글로벌 퀀텀 네트워크", c2d: "전 세계 어디서든 대기 시간 없이 초고화질 홀로그램 서비스를 즐길 수 있습니다.", c3t: "불멸의 자아 복원", c3d: "생체 데이터를 홀로그램으로 변환하여 완벽한 자아 복원을 보장합니다." },
+    en: { slogan: '"Birth of a hologram ecosystem connecting the entire world"', secTitle: "Core Revolution", c1t: "Precision Hologram Projection", c1d: "Projects 3D volumetric holograms that appear like real objects in the air.", c2t: "Global Quantum Network", c2d: "Enjoy ultra-high-definition holographic services worldwide with zero lag via our quantum security network.", c3t: "Immortal Self-Restoration", c3d: "Convert and save your bio-data as hologram data for perfect self-restoration in the future." },
+    zh: { slogan: '"连接全世界的全息生态系统的诞生"', secTitle: "核心革命", c1t: "超精密全息投影", c1d: "在空气中投影出如同真实物体般的3D立体全息图。", c2t: "全球量子网络", c2d: "通过量子安全网络，在全球任何地方都能无延迟地享受超高清全息服务。", c3t: "不朽的自我还原", c3d: "将生物数据转换为全息数据，确保未来完美还原自我。" }
+    // 아랍어, 인도어, 스페인어, 브라질어, 우크라이나어, 일본어, 러시아어 번역 텍스트를 여기에 추가할 수 있습니다.
+};
+
+function changeLanguage(lang) {
+    const data = translations[lang];
+    if (data) {
+        document.getElementById('main-slogan').innerText = data.slogan;
+        document.getElementById('section-title').innerText = data.secTitle;
+        document.getElementById('card1-title').innerText = data.c1t;
+        document.getElementById('card1-desc').innerText = data.c1d;
+        document.getElementById('card2-title').innerText = data.c2t;
+        document.getElementById('card2-desc').innerText = data.c2d;
+        document.getElementById('card3-title').innerText = data.c3t;
+        document.getElementById('card3-desc').innerText = data.c3d;
+    }
+}
+</script>
+
 </body>
 </html>
