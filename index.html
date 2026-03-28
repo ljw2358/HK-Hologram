@@ -2,231 +2,193 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>HK Holo-Projection v9.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HK GLOBAL HOLOGRAM</title>
     <style>
         :root {
             --holo-cyan: #00f2ff;
             --holo-pink: #ff00e1;
-            --scan-line: rgba(0, 242, 255, 0.15);
-            --bg-dark: #000000; /* 완전 검은색으로 변경 */
+            --bg-dark: #000000;
         }
 
         body {
             margin: 0;
-            padding: 0;
             background-color: var(--bg-dark);
             color: var(--holo-cyan);
-            font-family: 'Malgun Gothic', 'Courier New', sans-serif;
+            font-family: 'Malgun Gothic', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            /* 3D 원근감 극대화 */
-            perspective: 2000px; 
+            /* 공간감 깊게 설정 */
+            perspective: 1500px; 
         }
 
-        /* [핵심] 홀로그램 투영 베이스 */
-        .holo-projector {
+        /* [핵심] 항상 기울어져 있는 홀로그램 바디 */
+        .holo-frame {
             position: relative;
-            width: 400px;
-            height: 600px;
-            /* 위에서 아래로 원뿔형 빛의 기둥 효과 */
-            background: 
-                radial-gradient(ellipse at bottom, rgba(0, 242, 255, 0.2) 0%, transparent 70%),
-                repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scan-line) 2px, var(--scan-line) 4px);
-            border-bottom: 2px solid var(--holo-cyan);
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.3), inset 0 -20px 30px rgba(0, 242, 255, 0.1);
+            width: 320px;
+            height: 580px;
+            border-left: 2px solid rgba(0, 242, 255, 0.3);
+            border-right: 2px solid rgba(0, 242, 255, 0.1);
+            background: linear-gradient(to bottom, rgba(0, 242, 255, 0.05), transparent);
             
-            /* 3D 각도 변경 (입체감) */
-            transform: rotateX(25deg) rotateY(-5deg);
+            /* 영화처럼 삐딱하게 고정 */
+            transform: rotateX(20deg) rotateY(-15deg) rotateZ(2deg);
             transform-style: preserve-3d;
-            transition: 0.3s ease-out;
-            
-            /* 스캔라인 애니메이션 */
-            background-size: 100% 100%, 100% 4px;
+            box-shadow: -20px 20px 50px rgba(0, 242, 255, 0.1);
+            animation: vibe 4s ease-in-out infinite alternate;
         }
 
-        /* 마우스 호버 시 입체 각도 변화 */
-        .holo-projector:hover {
-            transform: rotateX(15deg) rotateY(5deg) translateY(-20px);
-            box-shadow: 0 0 80px rgba(0, 242, 255, 0.5);
+        /* 미세하게 흔들리는 애니메이션 (살아있는 홀로그램 느낌) */
+        @keyframes vibe {
+            from { transform: rotateX(20deg) rotateY(-15deg) translateY(0); }
+            to { transform: rotateX(22deg) rotateY(-12deg) translateY(-10px); }
         }
 
-        /* 스캔바 애니메이션 효과 */
-        .holo-projector::after {
-            content: "";
+        /* [요청 1] 우측 상단 세로 언어 티커 */
+        .side-lang {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 10px;
-            background: rgba(0, 242, 255, 0.8);
-            filter: blur(10px);
-            animation: scanning 4s linear infinite;
-        }
-
-        @keyframes scanning {
-            0% { top: 0; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        /* [요청 1] 언어 티커: 오른쪽 상단으로 이동 및 스타일 변경 */
-        .lang-corner {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 150px;
+            top: 30px;
+            right: -20px; /* 살짝 밖으로 튀어나오게 */
+            height: 150px;
+            width: 100px;
             overflow: hidden;
-            text-align: right;
-            border-right: 1px solid rgba(255, 0, 225, 0.4);
-            padding-right: 10px;
-            transform: translateZ(50px); /* 화면 앞으로 튀어나오게 */
+            border-right: 2px solid var(--holo-pink);
+            transform: translateZ(50px);
         }
 
-        .ticker-text {
-            font-size: 0.75rem;
+        .ticker-v {
+            display: flex;
+            flex-direction: column;
+            animation: scroll-v 15s linear infinite;
+        }
+
+        .ticker-v span {
+            font-size: 0.7rem;
             color: var(--holo-pink);
-            text-shadow: 0 0 10px var(--holo-pink);
+            text-align: right;
+            padding: 5px;
+            text-shadow: 0 0 8px var(--holo-pink);
             white-space: nowrap;
-            display: inline-block;
-            animation: ticker-vertical 20s linear infinite;
         }
 
-        @keyframes ticker-vertical {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(-100%); }
+        @keyframes scroll-v {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
 
-        /* 중앙 정보 패널 */
-        .main-display {
+        /* 중앙 메인 디스플레이 */
+        .content {
             position: absolute;
+            width: 100%;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateZ(100px); /* 가장 앞으로 배치 */
+            transform: translateY(-50%) translateZ(80px); /* 글자를 앞으로 띄움 */
             text-align: center;
-            width: 80%;
         }
 
-        .glitch-header {
-            font-size: 1.1rem;
-            letter-spacing: 5px;
-            color: white;
-            opacity: 0.9;
-            text-shadow: 0 0 10px var(--holo-cyan);
-            margin-bottom: 20px;
+        .title {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            opacity: 0.8;
+            margin-bottom: 10px;
         }
 
-        .time-display {
-            font-size: 3.2rem;
+        .clock {
+            font-size: 3rem;
             font-weight: bold;
-            text-shadow: 0 0 20px var(--holo-cyan);
-            font-family: 'Courier New', monospace; /* 기계적인 느낌 */
+            text-shadow: 0 0 20px var(--holo-cyan), 0 0 40px var(--holo-cyan);
+            margin: 20px 0;
         }
 
-        /* 중앙 홀로그램 원형 비주얼 */
-        .core-orb {
-            width: 180px;
-            height: 180px;
-            background: 
-                radial-gradient(circle, var(--holo-cyan) 0%, transparent 60%),
-                repeating-radial-gradient(circle, transparent, transparent 5px, rgba(0, 242, 255, 0.1) 5px, rgba(0, 242, 255, 0.1) 10px);
+        /* 입체 구체 (빛 덩어리) */
+        .orb {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            background: radial-gradient(circle, var(--holo-cyan) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(10px);
-            animation: float 5s ease-in-out infinite alternate;
-            margin: 30px auto;
+            filter: blur(15px);
+            opacity: 0.6;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.4; }
+            to { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* 하단 바 */
+        .bottom-info {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
             transform: translateZ(30px);
         }
 
-        @keyframes float {
-            from { transform: translateY(0) rotate(0deg); opacity: 0.5; }
-            to { transform: translateY(-30px) rotate(10deg); opacity: 0.9; }
-        }
-
-        /* 하단 앱 독 */
-        .app-dock {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%) translateZ(70px);
+        .app-icons {
             display: flex;
+            justify-content: center;
             gap: 15px;
-            padding: 10px 30px;
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 30px;
+            margin-top: 20px;
         }
 
-        .app-icon {
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: 0.3s;
-            filter: drop-shadow(0 0 5px var(--holo-cyan));
-        }
-
-        .app-icon:hover {
-            transform: scale(1.3) translateY(-10px);
-            filter: drop-shadow(0 0 15px var(--holo-cyan));
+        .icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--holo-cyan);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 242, 255, 0.1);
         }
     </style>
 </head>
 <body>
 
-    <div class="holo-projector">
-        <div class="lang-corner">
-            <div class="ticker-text">
-                시스템 활성화<br>
-                SYSTEM ACTIVE<br>
-                系统已激活<br>
-                システム起動<br>
-                النظام نشط<br>
-                सिस्टम सक्रिय है<br>
-                SISTEMA ACTIVO<br>
-                SISTEMA ATIVO<br>
-                СИСТЕМА АКТИВНА<br>
-                &nbsp;<br>
-                시스템 활성화<br>
-                SYSTEM ACTIVE<br>
-                系统已激活<br>
-                시스템起動<br>
-                النظام نشط<br>
-                सिस्टम सक्रिय है<br>
-                SISTEMA ACTIVO<br>
-                SISTEMA ATIVO<br>
-                СИСТЕМА АКТИВНА
+    <div class="holo-frame">
+        <div class="side-lang">
+            <div class="ticker-v">
+                <span>시스템 활성화</span><span>SYSTEM ACTIVE</span><span>系统已激活</span>
+                <span>시스템起動</span><span>النظام نشط</span><span>सिस्टम सक्रिय है</span>
+                <span>SISTEMA ACTIVO</span><span>SISTEMA ATIVO</span><span>СИСТЕМА АКТИВНА</span>
+                <span>시스템 활성화</span><span>SYSTEM ACTIVE</span><span>系统已激活</span>
+                <span>시스템起動</span><span>النظام نشط</span><span>सिस्टम सक्रिय है</span>
+                <span>SISTEMA ACTIVO</span><span>SISTEMA ATIVO</span><span>СИСТЕМА АКТИВНА</span>
             </div>
         </div>
 
-        <div class="main-display">
-            <div class="glitch-header">HK GLOBAL NETWORK</div>
-            <div class="time-display" id="clock">00:00:00</div>
-            <div style="font-size: 0.7rem; color: #fff; opacity:0.6; margin-bottom: 20px;">ULSAN SECTOR 052</div>
-
-            <div class="core-orb"></div>
-
-            <p style="font-size: 0.9rem; color: var(--holo-pink); text-shadow: 0 0 10px var(--holo-pink);">QUANTUM ENCRYPTED</p>
+        <div class="content">
+            <div class="title">HK GLOBAL NETWORK</div>
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="orb"></div>
+            <div style="color: var(--holo-pink); font-size: 0.8rem; letter-spacing: 2px;">QUANTUM SECURED</div>
         </div>
 
-        <div class="app-dock">
-            <div class="app-icon">🤖</div>
-            <div class="app-icon">🛰️</div>
-            <div class="app-icon">🔋</div>
-            <div class="app-icon">🌐</div>
+        <div class="bottom-info">
+            <div style="font-size: 0.6rem; opacity: 0.5;">SECTOR: ULSAN_052</div>
+            <div class="app-icons">
+                <div class="icon">🤖</div>
+                <div class="icon">🛰️</div>
+                <div class="icon">🔋</div>
+                <div class="icon">🌐</div>
+            </div>
         </div>
     </div>
 
     <script>
-        function updateClock() {
+        function updateTime() {
             const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').innerText = `${h}:${m}:${s}`;
+            document.getElementById('clock').innerText = 
+                now.getHours().toString().padStart(2, '0') + ":" +
+                now.getMinutes().toString().padStart(2, '0') + ":" +
+                now.getSeconds().toString().padStart(2, '0');
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateTime, 1000);
+        updateTime();
     </script>
 </body>
 </html>
